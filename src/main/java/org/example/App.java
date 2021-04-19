@@ -1,13 +1,15 @@
 package org.example;
 
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class App {
 
+    /**
+     * Calcule le chiffre le plus proche de 0 et prendre en priorité le nombre
+     * positif si l'écart est le même
+     */
     public static void procheZero(int[] tabInt) {
         AtomicReference<OptionalInt> result = new AtomicReference<>(OptionalInt.empty());
         AtomicReference<OptionalInt> ecart = new AtomicReference<>(OptionalInt.empty());
@@ -15,7 +17,7 @@ public class App {
                 .distinct()
                 .forEach(value -> {
                     int ecartValue = value < 0 ? 0 - value : value;
-                    if (ecart.get().isEmpty() || ecart.get().getAsInt() > ecartValue || (result.get().getAsInt() < value && (ecart.get().getAsInt() == ecartValue))) {
+                    if (ecart.get().isEmpty() || result.get().isEmpty() || ecart.get().getAsInt() > ecartValue || (result.get().getAsInt() < value && (ecart.get().getAsInt() == ecartValue))) {
                         result.set(OptionalInt.of(value));
                         ecart.set(OptionalInt.of(ecartValue));
                     }
@@ -50,8 +52,8 @@ public class App {
     public static void main(String[] args) {
         System.out.println("Hello World!");
         int[] tab = {2, 1, 3, -2, -1, 3, 1};
-        procheZero(tab);
-        plusPetit(tab);
-        plusGrand(tab);
+        procheZero(tab); // result 1
+        plusPetit(tab); // result -2
+        plusGrand(tab); // result 3
     }
 }
